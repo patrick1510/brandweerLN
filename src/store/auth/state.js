@@ -1,6 +1,10 @@
 export default function() {
   return {
-    username: null,
-    token: localStorage.getItem("user-token") || ""
+    name: localStorage.getItem("name") || null,
+    role: localStorage.getItem("role") || null,
+    token: localStorage.getItem("token") || null,
+    userId: localStorage.getItem("userId") || null,
+    username: localStorage.getItem("username") || null,
+    expiresIn: localStorage.getItem("expiresIn") || null
   };
 }

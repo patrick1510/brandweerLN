@@ -3,7 +3,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    this.$router.push({ name: "Login" });
+  }
+};
 </script>
 
 <style></style>

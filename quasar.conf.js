@@ -19,7 +19,7 @@ module.exports = function(/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files
-    boot: [],
+    boot: ["mixins", "initStore", "initAuth", "initErrorHandling"],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -73,8 +73,13 @@ module.exports = function(/* ctx */) {
       port: 8000,
       open: true, // opens browser window automatically
       proxy: {
-        "/login": {
-          target: "https://brandweer-userservice.azurewebsites.net/"
+        "/api/login": {
+          target: "https://brandweer-userservice.azurewebsites.net",
+          pathRewrite: { "^/api": "" }
+        },
+        "/api/polls": {
+          target: "https://brandweer-pollqueryservice.azurewebsites.net",
+          pathRewrite: { "^/api": "" }
         }
       }
     },
@@ -98,7 +103,7 @@ module.exports = function(/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ["Notify"]
     },
 
     // animations: 'all', // --- includes all animations

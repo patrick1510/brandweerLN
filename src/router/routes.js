@@ -14,10 +14,11 @@ const routes = [
         }
       },
       {
-        path: "sign-in",
+        path: "login",
         name: "Login",
         component: () => import("pages/Login.vue"),
         meta: {
+          title: "Log-in",
           requiresAuth: false
         }
       },
@@ -26,28 +27,15 @@ const routes = [
         name: "PollsOverview",
         component: () => import("pages/Polls.vue"),
         meta: {
+          title: "Oefeningen & Evenementen",
           requiresAuth: true
         }
       },
       {
-        path: "create-poll",
-        name: "CreatePoll",
-        component: () => import("pages/CreatePoll.vue"),
-        meta: {
-          requiresAuth: true
-        }
-      },
-      {
-        path: "poll",
+        path: "polls/:id",
         name: "ViewPoll",
+        props: true,
         component: () => import("pages/Poll.vue"),
-        children: [
-          {
-            path: ":id",
-            name: "ViewPollSection",
-            component: () => import("components/ViewPollSection.vue")
-          }
-        ],
         meta: {
           requiresAuth: true
         }

@@ -29,7 +29,7 @@ export default function(/* { store, ssrContext } */) {
 
   router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth && !store().getters["auth/isAuthenticated"]) {
-      return next("/login");
+      return next({ name: "Login" });
     } else {
       next();
     }
