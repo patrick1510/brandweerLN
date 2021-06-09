@@ -8,8 +8,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "serve": "npm cache clean --force && npm install @quasar/cli && quasar serve",
-    "build": "npm cache clean --force && npm install @quasar/cli && quasar build"
+    "serve": "sudo npm install @quasar/cli && quasar serve",
+    "build": "sudo npm install @quasar/cli && quasar build"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
