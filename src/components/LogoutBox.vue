@@ -1,14 +1,12 @@
 <template>
-  <div class="logout-box">
-    <h2 class="logout-box__message">Hallo {{ name }}</h2>
-    <q-btn
-      class="logout-box__button"
-      @click="logout"
-      color="secondary"
-      text-color="black"
-      >Log uit</q-btn
-    >
-  </div>
+  <q-btn
+    class="logout-box__button text-body1"
+    @click="logout"
+    color="grey-9"
+    text-color="white"
+    :title="`Ingelogd als ${name}`"
+    >Log uit</q-btn
+  >
 </template>
 
 <script>
@@ -16,6 +14,12 @@ export default {
   name: "LogoutBox",
   methods: {
     logout() {
+      if (
+        !confirm(
+          `U bent nu ingelogd als ${this.$store.getters["auth/name"]}. Weet u zeker dat u uit wilt loggen?`
+        )
+      )
+        return;
       this.$store
         .dispatch("auth/logout")
         .then(response => {
