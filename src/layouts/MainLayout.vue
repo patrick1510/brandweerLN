@@ -3,7 +3,7 @@
     <q-header class="bg-transparent">
       <q-toolbar class="flex row justify-between items-center wrap q-pa-md ">
         <img
-          src="~assets/logo-met-schild.svg"
+          src="~assets/logo.svg"
           class="logo"
           alt="Brandweer Limburg Noord"
         />
@@ -31,14 +31,14 @@ export default {
 };
 </script>
 <style lang="sass" scoped>
-.box
-  margin: 0 auto
-  display: flex
-  flex-direction: row
-  justify-content: space-between
-  flex-wrap: wrap
-  width: 70%
-  padding: 20px
+// .box
+//   margin: 0 auto
+//   display: flex
+//   flex-direction: row
+//   justify-content: space-between
+//   flex-wrap: wrap
+//   width: 70%
+//   padding: 20px
 .q-layout
   background-image: url("~assets/bg.jpg")
   background-size: cover
@@ -46,7 +46,7 @@ header
   position: static
 .logo
   margin-right: 1rem
-  height: 100px
+  height: 5rem
 .q-page-container
   padding-top: 40px !important
 </style>
