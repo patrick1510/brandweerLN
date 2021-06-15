@@ -71,23 +71,13 @@ module.exports = function(/* ctx */) {
     devServer: {
       https: false,
       port: 8000,
-      open: true, // opens browser window automatically
-      proxy: {
-        "/api/login": {
-          target: "https://brandweer-userservice.azurewebsites.net",
-          pathRewrite: { "^/api": "" }
-        },
-        "/api/polls": {
-          target: "https://brandweer-pollqueryservice.azurewebsites.net",
-          pathRewrite: { "^/api": "" }
-        }
-      }
+      open: true // opens browser window automatically
     },
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
       iconSet: "material-icons", // Quasar icon set
-      lang: "en-us", // Quasar language pack
+      lang: "nl", // Quasar language pack
       config: {},
 
       // Possible values for "importStrategy":
