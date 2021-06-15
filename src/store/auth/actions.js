@@ -3,10 +3,19 @@ import axios from "axios";
 export function login({ commit }, { username, password }) {
   commit("AUTH_REQUEST");
   return axios
-    .post("/api/login", {
-      username,
-      password
-    })
+    .post(
+      "https://brandweer-userservice.azurewebsites.net/login",
+      {
+        username,
+        password
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          allow: "POST,OPTIONS"
+        }
+      }
+    )
     .then(response => {
       const { name, role, userId, expires_in } = response.data;
       const token = `Bearer ${response.data.access_token}`;

@@ -5,7 +5,6 @@ export function AUTH_SUCCESS(
   state,
   { expiresIn, name, role, token, userId, username }
 ) {
-  console.log("expireTime in store set at: ", expiresIn);
   state.name = name;
   state.role = role;
   state.status = "success";

@@ -1,5 +1,4 @@
 export function isAuthenticated(state) {
-  console.log(state.token);
   return !!state.token;
 }
 
@@ -9,6 +8,10 @@ export function authStatus(state) {
 
 export function name(state) {
   return state.name;
+}
+
+export function userID(state) {
+  return state.userId;
 }
 
 export function isTokenExpired(state) {
