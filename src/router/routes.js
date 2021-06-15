@@ -27,7 +27,7 @@ const routes = [
         name: "PollsOverview",
         component: () => import("pages/Polls.vue"),
         meta: {
-          title: "Oefeningen & Evenementen",
+          title: "Polls overzicht",
           requiresAuth: true
         }
       },
@@ -37,6 +37,7 @@ const routes = [
         props: true,
         component: () => import("pages/Poll.vue"),
         meta: {
+          title: "Poll",
           requiresAuth: true
         }
       }
