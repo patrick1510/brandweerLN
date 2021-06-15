@@ -12,42 +12,72 @@
     v-else-if="poll"
     class="page-container flex column justify-start items-stretch"
   >
+    <q-btn
+      @click="goTo('PollsOverview')"
+      class="text-body1 bg-primary text-white"
+      >&lt; Terug naar polls overzicht</q-btn
+    >
+
     <q-card class="bg-primary q-pa-lg flex column flex-center items-stretch">
-      <h2 class="poll__title">{{ poll.titel }}</h2>
+      <header class="col-12 text-center text-weight-bold">
+        <h2 class="poll__title">{{ poll.titel }}</h2>
+      </header>
       <q-card-section
-        class="poll__field bg-white text-center no-border-radius"
+        class="poll__field bg-white text-center text-body1 no-border-radius"
         >{{ poll.omschrijving }}</q-card-section
       >
       <q-card-section
-        class="poll__field bg-white text-center no-border-radius"
+        class="poll__field bg-white text-center text-body1 no-border-radius"
         >{{ convertDateLocal(poll.vindtPlaatsOp) }}</q-card-section
       >
       <q-card-section
-        class="poll__field flex column bg-white text-center no-border-radius"
+        class="poll__field flex column bg-white text-center text-body1 no-border-radius"
       >
-        <div class="answer-buttons flex justify-center">
+        <p>Mijn aanwezigheid</p>
+        <div
+          class="answer-buttons flex justify-center"
+          :class="{ 'q-mb-md': isAnswerSet }"
+        >
           <q-btn
             @click="answer('ja')"
-            class="answer-button answer-button--yes"
+            class="answer-button answer-button--yes q-mr-md"
             :class="{ chosen: isUserAttending }"
-            :disable="isAnswerSet"
+            :disable="isLoading || isAnswerSet"
             >Ja</q-btn
           ><q-btn
             @click="answer('nee')"
             class="answer-button answer-button--no"
-            :disable="isAnswerSet"
+            :disable="isLoading || isAnswerSet"
             :class="{ chosen: isUserNotAttending }"
             >Nee</q-btn
           >
         </div>
-        <small v-if="isAnswerSet"
-          >Het is niet mogelijk het antwoord aan te passen</small
-        >
+        <p class="text-caption" v-if="isAnswerSet">
+          Verwijder het antwoord hieronder om het aan te passen
+        </p>
       </q-card-section>
     </q-card>
 
-    <q-card>
-      test
+    <q-card
+      v-if="can('update', 'poll') && answers.length > 0"
+      class="bg-primary q-pa-lg"
+    >
+      <h2 class="poll__title">Aanwezigheidslijst</h2>
+      <div v-for="answer of answers" :key="answer.antwoordId">
+        <q-card-section
+          class="bg-white text-center no-border-radius flex justify-between"
+        >
+          <div>{{ answer.name }}</div>
+          <div>{{ answer.antwoord }}</div>
+          <q-btn
+            @click="removeAnswer(answer.antwoordId)"
+            round
+            color="primary"
+            icon="delete"
+            dense
+          />
+        </q-card-section>
+      </div>
     </q-card>
   </q-page>
 
@@ -55,12 +85,12 @@
 </template>
 
 <script>
-import { convertDate } from "../helpers";
+import { ConvertDateTime } from "../helpers.js";
 export default {
   name: "PollView",
   data() {
     return {
-      isLoading: true
+      isLoading: false
     };
   },
   props: {
@@ -73,14 +103,9 @@ export default {
     this.isLoading = true;
     this.$store
       .dispatch("polls/getPoll", this.id)
-      .then(poll => {
-        if (poll) console.log("got poll!", poll);
-      })
+      .then(poll => {})
       .catch(err => {
-        console.log(
-          "Something went wrong sending the request to the store",
-          err
-        );
+        console.log("Something went wrong getting the poll", err);
       })
       .finally(() => {
         this.isLoading = false;
@@ -88,13 +113,18 @@ export default {
   },
   computed: {
     poll() {
-      return this.$store.state.polls.polls[this.id] ?? {};
+      // return this.$store.state.polls.polls[this.id] ?? {};
+      const polls = this.$store.getters["polls/getPolls"];
+      return polls[this.id];
+    },
+    answers() {
+      return Object.values(this.poll.antwoorden);
     },
     myAnswer() {
       if (!this.poll) {
-        return {};
+        return "";
       }
-      return Object.values(this.poll.antwoorden).find(answer => {
+      return this.answers.find(answer => {
         return answer.userId === this.$store.state.auth.userId;
       })?.antwoord;
     },
@@ -110,18 +140,61 @@ export default {
   },
   methods: {
     convertDateLocal(date) {
-      return convertDate(date);
+      const cdt = new ConvertDateTime(date);
+      return cdt.ISOtoNL();
     },
     answer(response) {
-      //TODO dispatch call
-      console.log(response);
+      if (
+        confirm("Weet u het zeker? Het antwoord kan niet meer worden aangepast")
+      ) {
+        this.isLoading = true;
+        this.$store
+          .dispatch("polls/setAnswer", {
+            pollId: this.id,
+            answer: response
+          })
+          .then(() => {
+            Notify.create({
+              title: "Antwoord ingevuld!",
+              icon: "success",
+              color: "green",
+              textColor: "white"
+            });
+          })
+          .catch(() => {
+            Notify.create({
+              title: "Het zetten van het antwoord ging mis",
+              icon: "error",
+              color: "primary",
+              textColor: "white"
+            });
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
+      }
+    },
+    removeAnswer(answerId) {
+      this.$store
+        .dispatch("polls/removeAnswer", {
+          pollId: this.id,
+          answerId: answerId
+        })
+        .then(() => {});
+    },
+    goTo(e) {
+      this.$router.push({ name: e });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .page-container {
+  width: 24rem;
   gap: 3rem;
+  @media (max-width: 24em) {
+    width: 100%;
+  }
 }
 .poll {
   &__title {

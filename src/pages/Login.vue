@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { Notify } from "quasar";
 export default {
   name: "PageLogin",
   data() {
@@ -63,11 +64,22 @@ export default {
         })
         .then(data => {
           this.$router.push({ name: "PollsOverview" });
-          //TODO show notify message
+          Notify.create({
+            message: `Welkom ${this.$store.getters["auth/name"]}!`,
+            color: "green",
+            textColor: "white"
+          });
         })
         .catch(err => {
           console.log("Login failed!");
-          //TODO show notify ERROR message
+
+          Notify.create({
+            title: "Het inloggen ging mis",
+            message: "Kloppen de inloggegevens?",
+            icon: "error",
+            color: "primary",
+            textColor: "white"
+          });
         })
         .finally(() => {
           this.isLoading = false;
