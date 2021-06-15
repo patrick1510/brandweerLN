@@ -12,26 +12,24 @@
     v-else-if="poll"
     class="page-container flex column justify-start items-stretch"
   >
-    <q-btn
-      @click="goTo('PollsOverview')"
-      class="text-body1 bg-primary text-white"
+    <q-btn @click="goTo('PollsOverview')" class="text-h5 bg-primary text-white"
       >&lt; Terug naar polls overzicht</q-btn
     >
 
     <q-card class="bg-primary q-pa-lg flex column flex-center items-stretch">
       <header class="col-12 text-center text-weight-bold">
-        <h2 class="poll__title">{{ poll.titel }}</h2>
+        <h1 class="poll__title">{{ poll.titel }}</h1>
       </header>
       <q-card-section
-        class="poll__field bg-white text-center text-body1 no-border-radius"
+        class="poll__field bg-white text-center text-h5 no-border-radius"
         >{{ poll.omschrijving }}</q-card-section
       >
       <q-card-section
-        class="poll__field bg-white text-center text-body1 no-border-radius"
+        class="poll__field bg-white text-center text-h5 no-border-radius"
         >{{ convertDateLocal(poll.vindtPlaatsOp) }}</q-card-section
       >
       <q-card-section
-        class="poll__field flex column bg-white text-center text-body1 no-border-radius"
+        class="poll__field flex column bg-white text-center text-h5 no-border-radius"
       >
         <p>Mijn aanwezigheid</p>
         <div
@@ -52,7 +50,7 @@
             >Nee</q-btn
           >
         </div>
-        <p class="text-caption" v-if="isAnswerSet">
+        <p class="text-body1" v-if="isAnswerSet">
           Verwijder het antwoord hieronder om het aan te passen
         </p>
       </q-card-section>
@@ -62,13 +60,13 @@
       v-if="can('update', 'poll') && answers.length > 0"
       class="bg-primary q-pa-lg"
     >
-      <h2 class="poll__title">Aanwezigheidslijst</h2>
+      <h1 class="poll__title">Aanwezigheidslijst</h1>
       <div v-for="answer of answers" :key="answer.antwoordId">
         <q-card-section
           class="bg-white text-center no-border-radius flex justify-between"
         >
-          <div>{{ answer.name }}</div>
-          <div>{{ answer.antwoord }}</div>
+          <div class="answer-field">{{ answer.name }}</div>
+          <div class="answer-field">{{ answer.antwoord }}</div>
           <q-btn
             @click="removeAnswer(answer.antwoordId)"
             round
@@ -85,6 +83,7 @@
 </template>
 
 <script>
+import { Notify } from "quasar";
 import { ConvertDateTime } from "../helpers.js";
 export default {
   name: "PollView",
@@ -155,15 +154,14 @@ export default {
           })
           .then(() => {
             Notify.create({
-              title: "Antwoord ingevuld!",
-              icon: "success",
+              message: "Antwoord ingevuld!",
               color: "green",
               textColor: "white"
             });
           })
           .catch(() => {
             Notify.create({
-              title: "Het zetten van het antwoord ging mis",
+              message: "Het geven van het antwoord ging mis",
               icon: "error",
               color: "primary",
               textColor: "white"
@@ -180,7 +178,14 @@ export default {
           pollId: this.id,
           answerId: answerId
         })
-        .then(() => {});
+        .then(() => {
+          Notify.create({
+            message: "Antwoord verwijderd!",
+            caption: "Het is nu weer mogelijk een nieuw antwoord te geven",
+            color: "green",
+            textColor: "white"
+          });
+        });
     },
     goTo(e) {
       this.$router.push({ name: e });
@@ -233,5 +238,8 @@ export default {
       background: red;
     }
   }
+}
+.answer-field {
+  font-size: 1rem;
 }
 </style>

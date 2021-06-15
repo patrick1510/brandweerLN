@@ -12,21 +12,4 @@ export default ({ store }) => {
       return Promise.reject(error);
     }
   );
-
-  axios.interceptors.response.use(
-    function(response) {
-      return response;
-    },
-    function(error) {
-      // handle error
-      if (!error.response.isOk) {
-        Notify.create({
-          message: "Something went wrong!",
-          icon: "warning",
-          color: "primary",
-          textColor: "white"
-        });
-      }
-    }
-  );
 };
