@@ -15,10 +15,10 @@
     </q-card-section>
     <q-card-section v-if="!can('view', 'answerstats')">
       <table>
-        <tr><td>eigen aanwezigheid:</td>
-          <td v-if="answers.yes" class="text-green">aanwezig</td>
-          <td v-else-if="answers.no" class="text-red">niet aanwezig</td>
-          <td v-else class="text-grey-5">niks opgegeven</td>
+        <tr><td>Eigen aanwezigheid:</td>
+          <td v-if="answers.yes" class="text-green">Aanwezig</td>
+          <td v-else-if="answers.no" class="text-red">Niet aanwezig</td>
+          <td v-else class="text-grey-5">Niks opgegeven</td>
         </tr>
       </table>
     </q-card-section>
@@ -28,14 +28,14 @@
         <q-card-section>
           <table>
             <tr>
-              <td>ja: {{ answers.yes }}</td>
-              <td>nee: {{ answers.no }}</td>
+              <td>Ja: {{ answers.yes }}</td>
+              <td>Nee: {{ answers.no }}</td>
             </tr>
           </table>
         </q-card-section>
         <q-card-actions v-if="can('update', 'polls')" class="fixedbottom">
-          <q-btn flat>bewerken</q-btn>
-          <q-btn flat>verwijderen</q-btn>
+          <q-btn flat>Bewerken</q-btn>
+          <q-btn flat>Verwijderen</q-btn>
         </q-card-actions>
       </div>
     </template>
