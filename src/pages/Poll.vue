@@ -58,7 +58,7 @@
     </q-card>
 
     <q-card
-      v-if="can('update', 'poll') && answers.length > 0"
+      v-if="answers.length > 0"
       class="bg-primary q-pa-lg"
     >
       <h1 class="poll__title">Aanwezigheidslijst</h1>
