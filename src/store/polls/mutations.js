@@ -8,12 +8,13 @@ export function NEW_POLL(state, returndata) {
   const currentPolls = state.polls;
   const newPolls = {
     ...currentPolls,
-    [returndata.id]: {
-      pollId: returndata.id,
+    [returndata.pollId]: {
+      pollId: returndata.pollId,
       titel: returndata.titel,
       vindtPlaatsOp: returndata.vindtPlaatsOp,
       omschrijving: returndata.omschrijving,
-      userId: returndata.userId
+      userId: returndata.userId,
+      antwoorden: {}
     }
   };
   state.polls = newPolls;
