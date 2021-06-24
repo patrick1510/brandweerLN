@@ -22,7 +22,8 @@
       </header>
       <q-card-section
         class="poll__field bg-white text-center text-h5 no-border-radius"
-        >{{ poll.omschrijving }}</q-card-section
+        v-html="poll.omschrijving"
+        ></q-card-section
       >
       <q-card-section
         class="poll__field bg-white text-center text-h5 no-border-radius"
